@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <title>Solscan Wallet Checker</title>
+  <style>
+    .container {
+      max-width: 500px;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #333;
+      color: #fff;
+    }
+    body {
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .form-control {
+      background-color: #444;
+      border: 1px solid #555;
+      color: #fff;
+    }
+    .btn {
+      margin: 5px;
+    }
+    .btn-primary {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #004085;
+    }
+    .btn-secondary {
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+    .btn-secondary:hover {
+      background-color: #5a6268;
+      border-color: #545b62;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+    .btn-warning {
+      background-color: #ffc107;
+      border-color: #ffc107;
+    }
+    .btn-warning:hover {
+      background-color: #e0a800;
+      border-color: #d39e00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container text-center">
+    <h1 class="mb-4">Wallet Checker</h1>
+    <form id="wallet-form">
+      <div class="form-group">
+        <input type="text" name="wallet" id="wallet" class="form-control" placeholder="Enter wallet address" required>
+      </div>
+      <button type="button" class="btn btn-secondary" onclick="searchSolscan()">Solscan $ZACK Transactions</button>
+      <button type="button" class="btn btn-secondary" onclick="searchX()">X Wallet Search</button>
+      <button type="button" class="btn btn-danger" onclick="addToBlacklist()">Blacklist Wallet</button>
+      <button type="button" class="btn btn-warning" onclick="removeFromBlacklist()">Remove from Blacklist</button>
+    </form>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script>
+    function searchSolscan() {
+      var wallet = document.getElementById('wallet').value;
+      if (wallet) {
+        var url = `https://solscan.io/account/${wallet}?token_address={{ ZACK_TOKEN_ADDRESS }}#transfers`;
+        window.open(url, '_blank');
+      } else {
+        alert('Wallet address is required.');
+      }
+    }
+
+    function searchX() {
+      var wallet = document.getElementById('wallet').value;
+      if (wallet) {
+        var url = `https://x.com/search?q=${wallet}&src=typed_query`;
+        window.open(url, '_blank');
+      } else {
+        alert('Wallet address is required.');
+      }
+    }
+
+    function addToBlacklist() {
+      var wallet = document.getElementById('wallet').value;
+      if (wallet) {
+        fetch('/blacklist/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ wallet: wallet })
+        }).then(response => {
+          if (response.ok) {
+            alert('Wallet added to blacklist.');
+          } else {
+            alert('Failed to add wallet to blacklist.');
+          }
+        });
+      } else {
+        alert('Wallet address is required.');
+      }
+    }
+
+    function removeFromBlacklist() {
+      var wallet = document.getElementById('wallet').value;
+      if (wallet) {
+        fetch('/blacklist/remove', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ wallet: wallet })
+        }).then(response => {
+          if (response.ok) {
+            alert('Wallet removed from blacklist.');
+          } else {
+            alert('Failed to remove wallet from blacklist.');
+          }
+        });
+      } else {
+        alert('Wallet address is required.');
+      }
+    }
+  </script>
+</body>
+</html>
