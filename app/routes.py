@@ -1,4 +1,4 @@
-from flask import render_template_string, request, redirect, jsonify
+from flask import render_template, request, redirect, jsonify
 from . import app
 from .utils import load_blacklist, save_blacklist
 
@@ -6,7 +6,7 @@ ZACK_TOKEN_ADDRESS = "8vCAUbxejdtaxn6jnX5uaQTyTZLmXALg9u1bvFCAjtx7"
 
 @app.route('/')
 def index():
-    return render_template_string('index.html', ZACK_TOKEN_ADDRESS=ZACK_TOKEN_ADDRESS)
+    return render_template('index.html', ZACK_TOKEN_ADDRESS=ZACK_TOKEN_ADDRESS)
 
 @app.route('/search')
 def search():
