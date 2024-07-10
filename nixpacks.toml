@@ -4,6 +4,5 @@ commands = [
 ]
 
 [start]
-commands = [
-  "gunicorn --bind 0.0.0.0:$PORT run:app"
-]
+command = "gunicorn --bind 0.0.0.0:$PORT run:app"
+
